@@ -22,6 +22,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/login_user_hint"
+                android:inputType="textEmailAddress"
                 app:layout_constraintBottom_toTopOf="@+id/passwordEditText"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
