@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "95667809399",
+    "firebase_url": "https://morcillaconf.firebaseio.com",
+    "project_id": "morcillaconf",
+    "storage_bucket": "morcillaconf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95667809399:android:142b6188bf13c9c7",
+        "android_client_info": {
+          "package_name": "com.bankmorcillaconf.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "95667809399-1k4m4jngu879id022p0elr4h6k9730t3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bankmorcillaconf.app",
+            "certificate_hash": "4e48a1a0259e3d5f9cd44d70054f4a72e2c24c72"
+          }
+        },
+        {
+          "client_id": "95667809399-ljv63nbsou3r7uger15b5jss8ne1m5u3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ-SLG4JwTUS7CqT9qyIodCcXidcjPs3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "95667809399-ljv63nbsou3r7uger15b5jss8ne1m5u3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
