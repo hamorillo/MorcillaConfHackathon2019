@@ -44,5 +44,20 @@ class NewTaskActivity : AppCompatActivity() {
                 Toast.makeText(this@NewTaskActivity, "Invalid url", Toast.LENGTH_SHORT).show()
             }
         }
+
+
+        taskRepository.getAllTasks(
+            UserRepository.staticUser!!, ResultListener(
+                onSuccess = { tasks ->
+                    var tasksString = "Your tasks:"
+                    tasks.forEach { task ->
+                        tasksString += "\n" + task.url
+                    }
+                    myTasksTextView.text = tasksString
+                },
+                onError = {
+                    myTasksTextView.text = "Error get my tasks"
+                }
+            ))
     }
 }

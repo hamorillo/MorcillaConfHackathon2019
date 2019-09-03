@@ -10,13 +10,14 @@ import com.bankmorcillaconf.app.repository.UserRepository.Companion.staticUser
 import com.bankmorcillaconf.app.ui.NewTaskActivity
 import com.bankmorcillaconf.app.util.ResultListener
 import kotlinx.android.synthetic.main.home_activity.*
-import java.util.*
-import android.os.CountDownTimer
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bankmorcillaconf.app.model.Pomodoro
 import com.bankmorcillaconf.app.model.Task
 import com.bankmorcillaconf.app.repository.PomodoroRepository
-import java.util.concurrent.TimeUnit
+import com.bankmorcillaconf.app.ui.PomodoroTimer
+import com.bankmorcillaconf.app.ui.UsersAdapter
 
 
 class HomeActivity : AppCompatActivity() {
@@ -35,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
 
     private var tasks: List<Task>? = null
 
-    private var counter: MyCount? = null
+    private var counter: PomodoroTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,17 +47,21 @@ class HomeActivity : AppCompatActivity() {
         }
 
         newPomodoroButton.setOnClickListener {
-            tasks?.get(0)?.let {
-                val pomodoro = Pomodoro(System.currentTimeMillis(), MIN_5)
-                pomodoroRepository.createPomodoro(staticUser!!, it, pomodoro, ResultListener(
-                    onSuccess = {
-                        Toast.makeText(this@HomeActivity, "Pomodoro created", Toast.LENGTH_SHORT).show()
-                        updateUsersInfo()
-                    },
-                    onError = {
-                        Toast.makeText(this@HomeActivity, "Error creating pomodoro", Toast.LENGTH_SHORT).show()
-                    }
-                ))
+            if (tasks == null || tasks?.size == 0) {
+                startActivity(NewTaskActivity.newIntent(this))
+            } else {
+                tasks?.get(0)?.let {
+                    val pomodoro = Pomodoro(System.currentTimeMillis(), MIN_5)
+                    pomodoroRepository.createPomodoro(staticUser!!, it, pomodoro, ResultListener(
+                        onSuccess = {
+                            Toast.makeText(this@HomeActivity, "Pomodoro created", Toast.LENGTH_SHORT).show()
+                            updateUsersInfo()
+                        },
+                        onError = {
+                            Toast.makeText(this@HomeActivity, "Error creating pomodoro", Toast.LENGTH_SHORT).show()
+                        }
+                    ))
+                }
             }
         }
     }
@@ -67,9 +72,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun updateUsersInfo() {
+        emailTextView.text = staticUser!!.email.split("@")[0]
         userRepository.getUserMe(staticUser!!.email, ResultListener(
             onSuccess = {
-                restartPomodoro()
+                counter?.cancel()
+                counter = PomodoroTimer.create(myCurrentPomodoro, staticUser!!)
             },
             onError = {
 
@@ -78,58 +85,29 @@ class HomeActivity : AppCompatActivity() {
 
         userRepository.getAllUsers(ResultListener(
             onSuccess = { users ->
-                var usersString = "All users:"
-                users.forEach { user ->
-                    usersString += "\n" + user.email
+                val usersWithoutMe = users
+                    .filter { it.email !=  staticUser!!.email}
+                    .sortedByDescending { it.currentPomodoroStartDate }
+
+                usersRecyclerView.apply {
+                    layoutManager = LinearLayoutManager(this@HomeActivity)
+                    adapter = UsersAdapter(usersWithoutMe)
                 }
-                usersTextView.text = usersString
             },
             onError = {
-                usersTextView.text = "Error get all users"
+//                usersTextView.text = "Error get all users"
+                Toast.makeText(this@HomeActivity, "Error get users", Toast.LENGTH_SHORT).show()
             }
         ))
 
         taskRepository.getAllTasks(staticUser!!, ResultListener(
             onSuccess = { tasks ->
                 this.tasks = tasks
-                var tasksString = "My tasks:"
-                tasks.forEach { task ->
-                    tasksString += "\n" + task.url
-                }
-                myTasksTextView.text = tasksString
             },
             onError = {
-                usersTextView.text = "Error get my tasks"
+//                usersTextView.text = "Error get my tasks"
+                Toast.makeText(this@HomeActivity, "Error get tasks", Toast.LENGTH_SHORT).show()
             }
         ))
-    }
-
-    private fun restartPomodoro() {
-        staticUser!!.currentPomodoroStartDate?.let {
-            val finishTime = it + (staticUser!!.currentPomodoroDuration ?: 0)
-            val durationLeft = finishTime - System.currentTimeMillis()
-            if (durationLeft > 0L) {
-                counter = MyCount(durationLeft, 1000L)
-                counter!!.start()
-            } else {
-                myCurrentPomodoro.text = "00:00"
-            }
-        } ?: run {
-            myCurrentPomodoro.text = "00:00"
-        }
-    }
-
-    inner class MyCount internal constructor(millisInFuture: Long, countDownInterval: Long) :
-        CountDownTimer(millisInFuture, countDownInterval) {
-
-        override fun onFinish() {
-            myCurrentPomodoro.text = "00:00"
-        }
-
-        override fun onTick(millis: Long) {
-            val hms = ((TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis))).toString() + ":"
-                    + ((TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))).toString()))
-            myCurrentPomodoro.text = hms
-        }
     }
 }

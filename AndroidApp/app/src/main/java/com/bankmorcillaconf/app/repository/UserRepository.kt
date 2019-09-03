@@ -48,8 +48,10 @@ class UserRepository {
             .addOnSuccessListener { document ->
                 document.data?.let {
                     Log.d(TAG, document.id + " => " + it)
-                    staticUser = it.toDataClass()
-                    result.success(staticUser!!)
+                    if (email == staticUser?.email) {
+                        staticUser = it.toDataClass()
+                    }
+                    result.success(it.toDataClass())
                 } ?: run {
                     Log.w(TAG, "Error getting document")
                     result.error(Unit)

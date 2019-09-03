@@ -38,4 +38,13 @@
             android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"/>
 
+
+    <TextView android:id="@+id/myTasksTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:layout_constraintTop_toBottomOf="@id/addTaskButton"
+              app:layout_constraintStart_toStartOf="parent"
+              android:layout_marginTop="16dp"
+              tools:text="Tasks..."/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
