@@ -15,7 +15,6 @@ class UserRepository {
 
     companion object {
         const val USERS = "users"
-        const val TASKS = "tasks"
         const val TAG = "UserRepository"
 
         var staticUser: User? = null
