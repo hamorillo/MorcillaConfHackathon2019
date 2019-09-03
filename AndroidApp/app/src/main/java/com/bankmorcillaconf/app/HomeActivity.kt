@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bankmorcillaconf.app.model.Task
 import com.bankmorcillaconf.app.repository.TaskRepository
 import com.bankmorcillaconf.app.repository.UserRepository
+import com.bankmorcillaconf.app.repository.UserRepository.Companion.staticUser
+import com.bankmorcillaconf.app.ui.NewTaskActivity
 import com.bankmorcillaconf.app.util.ResultListener
 import kotlinx.android.synthetic.main.home_activity.*
 
@@ -26,18 +28,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
 
-        addTaskButton.setOnClickListener {
-            val taskUrl = taskUrlEditText.text.toString()
-            val task = Task(taskUrl.split("/").takeLast(1)[0], taskUrl, "no description")
-            taskRepository.createTask(UserRepository.staticUser!!, task, ResultListener(
-                onSuccess = {
-                    Toast.makeText(this@HomeActivity, "Task created", Toast.LENGTH_SHORT).show()
-                    updateUsersInfo()
-                },
-                onError = {
-                    Toast.makeText(this@HomeActivity, "Error creating task", Toast.LENGTH_SHORT).show()
-                }
-            ))
+        createTaskButton.setOnClickListener {
+            startActivity(NewTaskActivity.newIntent(this))
         }
     }
 
@@ -50,24 +42,27 @@ class HomeActivity : AppCompatActivity() {
 
         userRepository.getAllUsers(ResultListener(
             onSuccess = { users ->
-                var usersString = ""
+                var usersString = "All users:"
                 users.forEach { user ->
-                    usersString += user.email + "\n"
-                    taskRepository.getAllTasks(user, ResultListener(
-                        onSuccess = { tasks ->
-                            tasks.forEach { task ->
-                                usersString += "- " + task.id + "\n"
-                            }
-                        },
-                        onError = {
-                            usersString += "Error get all tasks" + "\n"
-                        }
-                    ))
+                    usersString += "\n" + user.email
                 }
                 usersTextView.text = usersString
             },
             onError = {
                 usersTextView.text = "Error get all users"
+            }
+        ))
+
+        taskRepository.getAllTasks(staticUser!!, ResultListener(
+            onSuccess = { tasks ->
+                var tasksString = "My tasks:"
+                tasks.forEach { task ->
+                    tasksString += "\n" + task.url
+                }
+                myTasksTextView.text = tasksString
+            },
+            onError = {
+                usersTextView.text = "Error get my tasks"
             }
         ))
     }

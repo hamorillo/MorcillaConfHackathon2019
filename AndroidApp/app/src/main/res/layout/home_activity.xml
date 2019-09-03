@@ -12,54 +12,26 @@
               android:layout_height="wrap_content"
               app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintStart_toStartOf="parent"
+              android:text="Users..."/>
+
+
+    <TextView android:id="@+id/myTasksTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintEnd_toEndOf="parent"
               android:text="Users..."/>
 
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              app:layout_constraintTop_toTopOf="parent"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              android:text="HOME" android:id="@+id/textView"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+    <Button
+            android:id="@+id/createTaskButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/constraintLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-
-        <TextView android:id="@+id/titleAddTaskTextView"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  app:layout_constraintTop_toTopOf="parent"
-                  app:layout_constraintStart_toStartOf="parent"
-                  android:layout_marginTop="8dp"
-                  app:layout_constraintEnd_toEndOf="parent"
-                  android:text="Empezar tareaa..."/>
-
-        <EditText android:id="@+id/taskUrlEditText"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:hint="Task url"
-                  app:layout_constraintTop_toBottomOf="@+id/titleAddTaskTextView"
-                  app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                  app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                  android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <Button android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:text="Añadir tarea"
-                android:id="@+id/addTaskButton"
-                app:layout_constraintTop_toBottomOf="@id/taskUrlEditText" app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_gravity="end|bottom"
+            android:text="New task"
+            android:layout_margin="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
