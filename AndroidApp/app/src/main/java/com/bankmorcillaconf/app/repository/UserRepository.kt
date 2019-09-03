@@ -9,6 +9,7 @@ import com.bankmorcillaconf.app.util.sha1
 import com.bankmorcillaconf.app.util.toDataClass
 import com.google.common.collect.Lists
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 
 class UserRepository {
@@ -47,7 +48,8 @@ class UserRepository {
             .addOnSuccessListener { document ->
                 document.data?.let {
                     Log.d(TAG, document.id + " => " + it)
-                    result.success(it.toDataClass())
+                    staticUser = it.toDataClass()
+                    result.success(staticUser!!)
                 } ?: run {
                     Log.w(TAG, "Error getting document")
                     result.error(Unit)
@@ -62,7 +64,7 @@ class UserRepository {
         // Add a new document with a generated ID
         db.collection(USERS)
             .document(user.email.sha1())
-            .set(userMap)
+            .set(userMap, SetOptions.merge())
             .addOnSuccessListener {
                 Log.d(TAG, "DocumentSnapshot added")
                 getUserMe(user.email, result)
