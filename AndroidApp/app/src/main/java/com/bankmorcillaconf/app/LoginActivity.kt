@@ -8,12 +8,8 @@ import com.bankmorcillaconf.app.model.User
 import com.bankmorcillaconf.app.repository.UserRepository
 import com.bankmorcillaconf.app.repository.UserRepository.Companion.staticUser
 import com.bankmorcillaconf.app.util.ResultListener
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
-import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.login_activity.*
 import java.util.*
 
@@ -31,6 +27,17 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.login_activity)
         bindView()
         initializeFirebaseAuth()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        alreadySignIn()
+    }
+
+    private fun alreadySignIn() {
+        firebaseAuth.currentUser?.email?.let {
+            updateUserWithTokenPush(it)
+        }
     }
 
     private fun bindView() {

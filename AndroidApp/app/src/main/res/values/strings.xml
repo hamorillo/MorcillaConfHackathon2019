@@ -4,4 +4,5 @@
     <string name="login_password_hint">Password</string>
     <string name="login_button">Login</string>
     <string name="notification_title">They need you!</string>
+    <string name="logout">Logout</string>
 </resources>

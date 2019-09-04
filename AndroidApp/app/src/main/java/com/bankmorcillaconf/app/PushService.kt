@@ -25,7 +25,7 @@ class PushService : FirebaseMessagingService() {
         private const val CURRENT_POMODORO_DURATION_KEY = "currentPomodoroDuration"
         private const val ISSUER_MAIL = "issuerUser"
     }
-®
+
     private val userRepository = UserRepository()
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
