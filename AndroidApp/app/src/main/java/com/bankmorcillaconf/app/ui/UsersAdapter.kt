@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bankmorcillaconf.app.R
+import com.bankmorcillaconf.app.UserActivity
 import com.bankmorcillaconf.app.model.User
 import kotlinx.android.synthetic.main.home_user_item.view.*
 
@@ -26,6 +27,10 @@ class UsersAdapter(private val data: List<User>) : RecyclerView.Adapter<UsersAda
         holder.view.emailTextView.text = data[position].email.split("@")[0]
         holder.counter?.cancel()
         holder.counter = PomodoroTimer.create(holder.view.pomodoroTextView, data[position])
+
+        holder.view.setOnClickListener {
+            holder.view.context.startActivity(UserActivity.newIntent(holder.view.context, data[position].email))
+        }
     }
 
     override fun getItemCount() = data.size

@@ -25,6 +25,9 @@
         <activity android:name=".ui.NewTaskActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".UserActivity"
+                  android:screenOrientation="portrait"/>
+
         <service android:name=".PushService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
