@@ -6,4 +6,5 @@
 
     <color name="pomodoroEnabled">#000000</color>
     <color name="pomodoroDisabled">#888888</color>
+    <color name="translucent">#00ffffff</color>
 </resources>

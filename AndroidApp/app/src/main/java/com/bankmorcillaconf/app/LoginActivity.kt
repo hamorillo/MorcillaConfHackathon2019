@@ -2,6 +2,7 @@ package com.bankmorcillaconf.app
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bankmorcillaconf.app.model.User
@@ -36,6 +37,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun alreadySignIn() {
         firebaseAuth.currentUser?.email?.let {
+            showLoading()
             updateUserWithTokenPush(it)
         }
     }
@@ -51,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginWithMailAndPassword(mail: String, pass: String) {
+        showLoading()
         firebaseAuth.signInWithEmailAndPassword(mail, pass)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -62,8 +65,17 @@ class LoginActivity : AppCompatActivity() {
                         this@LoginActivity, "Authentication failed.",
                         Toast.LENGTH_SHORT
                     ).show()
+                    hideLoading()
                 }
             }
+    }
+
+    private fun showLoading() {
+        loadingProgressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        loadingProgressBar.visibility = View.GONE
     }
 
     private fun updateUser(mail: String, tokenPush: String?) {
@@ -71,12 +83,14 @@ class LoginActivity : AppCompatActivity() {
             onSuccess = {
                 staticUser = it
                 openHomeActivity()
+                hideLoading()
             },
             onError = {
                 Toast.makeText(
                     this@LoginActivity, "User creation failed.",
                     Toast.LENGTH_SHORT
                 ).show()
+                hideLoading()
             }
         ))
     }
