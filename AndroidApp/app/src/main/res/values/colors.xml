@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#ff7700</color>
+    <color name="colorPrimaryDark">#AC4F00</color>
+    <color name="colorAccent">#aa00aa</color>
 
     <color name="pomodoroEnabled">#000000</color>
-    <color name="pomodoroDisabled">#888888</color>
+    <color name="pomodoroDisabled">#88FFFFFF</color>
+    <color name="pomodoroUserDisabled">#44000000</color>
     <color name="translucent">#00ffffff</color>
 </resources>

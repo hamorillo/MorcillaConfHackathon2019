@@ -13,46 +13,51 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/colorPrimary"
             android:id="@+id/constraintLayout">
 
-
-        <TextView android:id="@+id/emailTextView"
-                  android:layout_width="wrap_content"
-                  tools:text="ha.morillo"
-                  android:layout_weight="1"
-                  android:textSize="18sp"
-                  android:layout_height="wrap_content"
-                  app:layout_constraintTop_toTopOf="parent"
-                  app:layout_constraintStart_toStartOf="parent"
-                  app:layout_constraintBottom_toBottomOf="parent"
-                  android:layout_marginStart="16dp"/>
-
+        <TextView android:id="@+id/pomodoroMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Get Ready"
+                  android:textSize="20sp"
+                  android:paddingTop="8dp"
+                  android:textStyle="bold"
+                  android:textColor="@android:color/white"/>
 
         <TextView android:id="@+id/myCurrentPomodoro"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  app:layout_constraintTop_toTopOf="parent"
-                  android:layout_margin="8dp"
-                  app:layout_constraintBottom_toBottomOf="parent"
-                  android:textSize="30sp"
-                  android:textStyle="bold"
-                  android:text="00:00" android:layout_marginEnd="8dp"
-                  app:layout_constraintEnd_toStartOf="@+id/newPomodoroButton"/>
+                  app:layout_constraintTop_toBottomOf="@id/pomodoroMessage"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  android:textSize="50sp"
+                  android:paddingTop="8dp"
+                  android:paddingBottom="8dp"
+                  android:textColor="@color/pomodoroDisabled"
+                  android:text="00:00"/>
 
         <Button android:id="@+id/newPomodoroButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="8dp"
+                app:layout_constraintTop_toBottomOf="@id/myCurrentPomodoro"
+                android:background="@drawable/background_rounded_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:text="+5min"
-                android:layout_marginStart="8dp"/>
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:text="START"
+                app:layout_constraintStart_toStartOf="parent"/>
 
         <View android:layout_width="match_parent"
-              android:layout_height="1dp"
+              android:layout_height="4dp"
               app:layout_constraintBottom_toBottomOf="@id/constraintLayout"
-              android:background="@android:color/black"/>
+              android:background="#88FFFFFF"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
