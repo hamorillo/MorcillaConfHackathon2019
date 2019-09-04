@@ -40,9 +40,13 @@ class TaskRepository {
     }
 
     fun getTask(user: User, task: Task, result: ResultListener<Task, Unit>) {
+        getTask(user.email, task, result)
+    }
+
+    fun getTask(userMail: String, task: Task, result: ResultListener<Task, Unit>) {
         // Add a new document with a generated ID
         db.collection(USERS)
-            .document(user.email.sha1())
+            .document(userMail.sha1())
             .collection(TASKS)
             .document(task.id)
             .get()
@@ -63,8 +67,12 @@ class TaskRepository {
 
 
     fun getAllTasks(user: User, result: ResultListener<List<Task>, Unit>) {
+        getAllTasks(user.email, result)
+    }
+
+    fun getAllTasks(userMail: String, result: ResultListener<List<Task>, Unit>) {
         db.collection(USERS)
-            .document(user.email.sha1())
+            .document(userMail.sha1())
             .collection(TASKS)
             .get()
             .addOnCompleteListener { task ->

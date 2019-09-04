@@ -3,6 +3,9 @@ package com.bankmorcillaconf.app
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.bankmorcillaconf.app.repository.TaskRepository
 import com.bankmorcillaconf.app.repository.UserRepository
@@ -18,6 +21,7 @@ import com.bankmorcillaconf.app.model.Task
 import com.bankmorcillaconf.app.repository.PomodoroRepository
 import com.bankmorcillaconf.app.ui.PomodoroTimer
 import com.bankmorcillaconf.app.ui.UsersAdapter
+import com.google.firebase.auth.FirebaseAuth
 
 
 class HomeActivity : AppCompatActivity() {
@@ -109,5 +113,30 @@ class HomeActivity : AppCompatActivity() {
                 Toast.makeText(this@HomeActivity, "Error get tasks", Toast.LENGTH_SHORT).show()
             }
         ))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.home_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.logout -> {
+                logoutActualUser()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun logoutActualUser() {
+        FirebaseAuth.getInstance().signOut()
+        closeHomeActivity()
+    }
+
+    private fun closeHomeActivity() {
+        finish()
     }
 }

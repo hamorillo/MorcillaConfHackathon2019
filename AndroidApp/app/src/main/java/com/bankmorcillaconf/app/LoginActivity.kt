@@ -2,18 +2,15 @@ package com.bankmorcillaconf.app
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bankmorcillaconf.app.model.User
 import com.bankmorcillaconf.app.repository.UserRepository
 import com.bankmorcillaconf.app.repository.UserRepository.Companion.staticUser
 import com.bankmorcillaconf.app.util.ResultListener
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
-import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.login_activity.*
 import java.util.*
 
@@ -33,6 +30,18 @@ class LoginActivity : AppCompatActivity() {
         initializeFirebaseAuth()
     }
 
+    override fun onResume() {
+        super.onResume()
+        alreadySignIn()
+    }
+
+    private fun alreadySignIn() {
+        firebaseAuth.currentUser?.email?.let {
+            showLoading()
+            updateUserWithTokenPush(it)
+        }
+    }
+
     private fun bindView() {
         loginButton.setOnClickListener {
             loginWithMailAndPassword(mailEditText.text.toString(), passwordEditText.text.toString())
@@ -44,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginWithMailAndPassword(mail: String, pass: String) {
+        showLoading()
         firebaseAuth.signInWithEmailAndPassword(mail, pass)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -55,8 +65,17 @@ class LoginActivity : AppCompatActivity() {
                         this@LoginActivity, "Authentication failed.",
                         Toast.LENGTH_SHORT
                     ).show()
+                    hideLoading()
                 }
             }
+    }
+
+    private fun showLoading() {
+        loadingProgressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        loadingProgressBar.visibility = View.GONE
     }
 
     private fun updateUser(mail: String, tokenPush: String?) {
@@ -64,12 +83,14 @@ class LoginActivity : AppCompatActivity() {
             onSuccess = {
                 staticUser = it
                 openHomeActivity()
+                hideLoading()
             },
             onError = {
                 Toast.makeText(
                     this@LoginActivity, "User creation failed.",
                     Toast.LENGTH_SHORT
                 ).show()
+                hideLoading()
             }
         ))
     }
