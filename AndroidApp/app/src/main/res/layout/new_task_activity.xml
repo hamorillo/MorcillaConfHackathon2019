@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.NewTaskActivity">
+
+    <TextView android:id="@+id/titleAddTaskTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              android:layout_marginTop="8dp"
+              app:layout_constraintEnd_toEndOf="parent"
+              android:text="Crear tarea..."/>
+
+    <EditText android:id="@+id/taskUrlEditText"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:hint="Task url"
+              app:layout_constraintTop_toBottomOf="@+id/titleAddTaskTextView"
+              app:layout_constraintStart_toStartOf="parent"
+              android:layout_marginStart="8dp"
+              app:layout_constraintEnd_toEndOf="parent"
+              android:layout_marginEnd="8dp"
+              android:layout_marginBottom="8dp"/>
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Crear tarea"
+            android:id="@+id/addTaskButton"
+            app:layout_constraintTop_toBottomOf="@id/taskUrlEditText"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+
+
+    <TextView android:id="@+id/myTasksTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:layout_constraintTop_toBottomOf="@id/addTaskButton"
+              app:layout_constraintStart_toStartOf="parent"
+              android:layout_marginTop="16dp"
+              tools:text="Tasks..."/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
