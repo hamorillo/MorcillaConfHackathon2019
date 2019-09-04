@@ -4,13 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bankmorcillaconf.app.repository.TaskRepository
 import com.bankmorcillaconf.app.repository.UserRepository
+import com.bankmorcillaconf.app.ui.TasksAdapter
 import com.bankmorcillaconf.app.util.ResultListener
 import kotlinx.android.synthetic.main.user_activity.*
 
 class UserActivity : AppCompatActivity() {
 
     private val userRepository = UserRepository()
+    private val taskRepository = TaskRepository()
 
     companion object {
         private const val EXTRA_USER_MAIL = "EXTRA_USER_MAIL"
@@ -29,7 +33,22 @@ class UserActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        retrieveUser(intent.getStringExtra(EXTRA_USER_MAIL))
+        intent.getStringExtra(EXTRA_USER_MAIL).let {
+            retrieveUser(it)
+            retrieveTaskForUser(it)
+        }
+    }
+
+    private fun retrieveTaskForUser(userMail: String) {
+        taskRepository.getAllTasks(userMail, ResultListener(
+            onSuccess = {
+                userTasksRecyclerView.apply {
+                    layoutManager = LinearLayoutManager(this@UserActivity)
+                    adapter = TasksAdapter(it)
+                }
+            },
+            onError = {}
+        ))
     }
 
     private fun retrieveUser(userMail: String) {
