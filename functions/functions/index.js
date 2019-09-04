@@ -7,26 +7,43 @@ admin.initializeApp();
 exports.sendNotif = functions.firestore.document('/push/{pushId}')
     .onWrite(async (change, context) => {
         const pushData = change.after.exists ? change.after.data() : null;
+        
         if(pushData === null){
             console.log('Push Data deleted: ', context.params.pushId);
             return
         }
 
+        if(pushData.destinationId === null){
+            console.log('Push Data without destionationID');
+            return
+        }
+
+        if(pushData.originId === null){
+            console.log('Push Data without originID');
+            return
+        }
+
+        const originId = pushData.originId;
         const destinationId = pushData.destinationId;        
-        const getDeviceToken = admin.firestore()
+        const getDestinationUser = admin.firestore()
             .doc(`/users/${destinationId}`).get();
 
+        const getOriginUser = admin.firestore()
+            .doc(`/users/${originId}`).get();
+
         let token;
-        const results = await Promise.all([getDeviceToken]);
-        token = results[0].data().tokenPush;
+        const results = await Promise.all([getDestinationUser, getOriginUser]);
+        const destinationUser = results[0].data()
+        const originUser = results[1].data()
+        token = destinationUser.tokenPush;
         console.log('UserID: ', destinationId,  'Token: ', token);
 
         // Notification details.
         const payload = {
-            notification: {
-                title: 'You have a new follower!',
-                body: `is now following you.`
-                //icon: follower.photoURL
+            data: {
+                currentPomodoroDuration: destinationUser.currentPomodoroDuration.toString(),
+                currentPomodoroStartDate: destinationUser.currentPomodoroStartDate.toString(),
+                issuerUser: originUser.email
             }
         };
 
