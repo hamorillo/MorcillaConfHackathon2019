@@ -29,8 +29,6 @@ import kotlinx.android.synthetic.main.home_user_item.*
 class HomeActivity : AppCompatActivity() {
 
     companion object {
-        const val MIN_5 = 5L * 60L * 1000L
-
         fun newIntent(context: Context): Intent {
             return Intent(context, HomeActivity::class.java)
         }

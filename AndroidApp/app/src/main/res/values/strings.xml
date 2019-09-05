@@ -7,4 +7,5 @@
     <string name="logout">Logout</string>
     <string name="new_task">New Task</string>
     <string name="my_profile">My profile</string>
+    <string name="pomodoros_on_task">%d pomodoros of %d min</string>
 </resources>

@@ -61,7 +61,7 @@ class UserActivity : AppCompatActivity() {
             onSuccess = {
                 userTasksRecyclerView.apply {
                     layoutManager = LinearLayoutManager(this@UserActivity)
-                    adapter = TasksAdapter(it)
+                    adapter = TasksAdapter(userMail, it)
                 }
             },
             onError = {}
