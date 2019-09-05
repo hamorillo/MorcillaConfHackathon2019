@@ -26,7 +26,21 @@ class UsersAdapter(private val data: List<User>) : RecyclerView.Adapter<UsersAda
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.view.emailTextView.text = data[position].email.split("@")[0]
         holder.counter?.cancel()
-        holder.counter = PomodoroTimer.create(holder.view.pomodoroTextView, data[position])
+        holder.counter = PomodoroTimer.create(holder.view.pomodoroTextView, data[position], android.R.color.black, R.color.pomodoroUserDisabled)
+
+        if (holder.counter != null) {
+            holder.view.pomodoroMessageTextView.text = "working..."
+        } else {
+            holder.view.pomodoroMessageTextView.text = "taking a rest"
+        }
+
+        val avatarId = data[position].email.length % 4
+        when (avatarId) {
+            0 -> holder.view.avatarImageView.setImageResource(R.drawable.avatar1)
+            1 -> holder.view.avatarImageView.setImageResource(R.drawable.avatar2)
+            2 -> holder.view.avatarImageView.setImageResource(R.drawable.avatar3)
+            3 -> holder.view.avatarImageView.setImageResource(R.drawable.avatar4)
+        }
 
         holder.view.setOnClickListener {
             holder.view.context.startActivity(UserActivity.newIntent(holder.view.context, data[position].email))

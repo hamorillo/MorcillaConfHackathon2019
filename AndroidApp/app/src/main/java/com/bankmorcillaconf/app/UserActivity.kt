@@ -36,6 +36,17 @@ class UserActivity : AppCompatActivity() {
         intent.getStringExtra(EXTRA_USER_MAIL).let {
             retrieveUser(it)
             retrieveTaskForUser(it)
+            renderImage(it)
+        }
+    }
+
+    private fun renderImage(email: String) {
+        val avatarId = email.length % 4
+        when (avatarId) {
+            0 -> avatarImageView.setImageResource(R.drawable.avatar1)
+            1 -> avatarImageView.setImageResource(R.drawable.avatar2)
+            2 -> avatarImageView.setImageResource(R.drawable.avatar3)
+            3 -> avatarImageView.setImageResource(R.drawable.avatar4)
         }
     }
 
@@ -64,22 +75,23 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun renderStatusIcon(currentPomodoroStartDate: Long?, currentPomodoroDuration: Long?) {
-        statusImageView.setImageDrawable(
+        statusTextView.setText(
             if (currentPomodoroStartDate != null && currentPomodoroDuration != null) {
                 val actualTimeStamp = System.currentTimeMillis()
                 val finishPomodoroTimeStamp = currentPomodoroStartDate + currentPomodoroDuration
                 if (actualTimeStamp > finishPomodoroTimeStamp) {
-                    getDrawable(R.drawable.user_available_ic)
+                    "Now is taking a rest" //getDrawable(R.drawable.user_available_ic)
                 } else {
-                    getDrawable(R.drawable.user_busy_ic)
+                    "Now is working" //getDrawable(R.drawable.user_busy_ic)
                 }
             } else {
-                getDrawable(R.drawable.user_available_ic)
+                "Now is taking a rest" //getDrawable(R.drawable.user_available_ic)
             }
         )
     }
 
     private fun renderMail(email: String) {
+        userNameTextView.text = email.split("@")[0]
         userMailTextView.text = email
     }
 }

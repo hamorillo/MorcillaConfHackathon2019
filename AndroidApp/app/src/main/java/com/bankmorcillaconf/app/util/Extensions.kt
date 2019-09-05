@@ -1,8 +1,11 @@
 package com.bankmorcillaconf.app.util
 
+import com.google.common.base.Strings.padStart
 import java.security.MessageDigest
 
 fun String.sha1() = hashString("SHA-1", this)
+
+fun Long.format(digits: Int) = this.toString().padStart(digits, '0')
 
 private fun hashString(type: String, input: String): String {
     val HEX_CHARS = "0123456789ABCDEF"

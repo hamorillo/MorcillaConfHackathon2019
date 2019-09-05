@@ -22,6 +22,7 @@ import com.bankmorcillaconf.app.repository.PomodoroRepository
 import com.bankmorcillaconf.app.ui.PomodoroTimer
 import com.bankmorcillaconf.app.ui.UsersAdapter
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.home_user_item.*
 
 
 class HomeActivity : AppCompatActivity() {
@@ -45,6 +46,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
+        supportActionBar?.elevation = 0f
+        supportActionBar?.title = staticUser!!.email.split("@")[0]
 
         createTaskButton.setOnClickListener {
             startActivity(NewTaskActivity.newIntent(this))
@@ -55,7 +58,8 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(NewTaskActivity.newIntent(this))
             } else {
                 tasks?.get(0)?.let {
-                    val pomodoro = Pomodoro(System.currentTimeMillis(), MIN_5)
+                    val time =  if (counter == null) MIN_5 else 0L
+                    val pomodoro = Pomodoro(System.currentTimeMillis(), time)
                     pomodoroRepository.createPomodoro(staticUser!!, it, pomodoro, ResultListener(
                         onSuccess = {
                             Toast.makeText(this@HomeActivity, "Pomodoro created", Toast.LENGTH_SHORT).show()
@@ -76,11 +80,17 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun updateUsersInfo() {
-        emailTextView.text = staticUser!!.email.split("@")[0]
         userRepository.getUserMe(staticUser!!.email, ResultListener(
             onSuccess = {
                 counter?.cancel()
-                counter = PomodoroTimer.create(myCurrentPomodoro, staticUser!!)
+                counter = PomodoroTimer.create(myCurrentPomodoro, staticUser!!, android.R.color.white)
+                if (counter != null) {
+                    pomodoroMessage.text = "Stay focused!"
+                    newPomodoroButton.text = "CANCEL"
+                } else {
+                    pomodoroMessage.text = "Ready?"
+                    newPomodoroButton.text = "START"
+                }
             },
             onError = {
 
@@ -117,6 +127,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
+        menu.add("Logged with ${staticUser!!.email}")
         inflater.inflate(R.menu.home_menu, menu)
         return true
     }
