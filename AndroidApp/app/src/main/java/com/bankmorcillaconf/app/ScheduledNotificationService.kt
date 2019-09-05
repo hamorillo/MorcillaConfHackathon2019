@@ -39,7 +39,7 @@ class ScheduledNotificationService : JobService() {
     }
 
     override fun onStopJob(params: JobParameters): Boolean {
-        return true
+        return false
     }
 
     override fun onStartJob(params: JobParameters): Boolean {
