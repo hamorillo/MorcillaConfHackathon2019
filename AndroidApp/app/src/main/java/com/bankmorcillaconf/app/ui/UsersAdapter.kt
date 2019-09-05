@@ -26,12 +26,20 @@ class UsersAdapter(private val data: List<User>) : RecyclerView.Adapter<UsersAda
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.view.emailTextView.text = data[position].email.split("@")[0]
         holder.counter?.cancel()
-        holder.counter = PomodoroTimer.create(holder.view.pomodoroTextView, data[position], android.R.color.black, R.color.pomodoroUserDisabled)
+        holder.counter = PomodoroTimer.create(holder.view.pomodoroTextView, data[position], android.R.color.black, R.color.pomodoroUserDisabled, object: PomodoroTimerListener{
+            override fun working() {
+                renderWorking(holder)
+            }
+
+            override fun finished() {
+                renderTakingARest(holder)
+            }
+        })
 
         if (holder.counter != null) {
-            holder.view.pomodoroMessageTextView.text = "working..."
+            renderWorking(holder)
         } else {
-            holder.view.pomodoroMessageTextView.text = "taking a rest"
+            renderTakingARest(holder)
         }
 
         val avatarId = data[position].email.length % 4
@@ -46,6 +54,15 @@ class UsersAdapter(private val data: List<User>) : RecyclerView.Adapter<UsersAda
             holder.view.context.startActivity(UserActivity.newIntent(holder.view.context, data[position].email))
         }
     }
+
+    private fun renderWorking(holder: MyViewHolder){
+        holder.view.pomodoroMessageTextView.text = "working..."
+    }
+
+    private fun renderTakingARest(holder: MyViewHolder){
+        holder.view.pomodoroMessageTextView.text = "taking a rest"
+    }
+
 
     override fun getItemCount() = data.size
 }
