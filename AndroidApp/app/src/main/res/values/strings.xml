@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bank</string>
+    <string name="app_name">PomoBank</string>
     <string name="login_user_hint">e-Mail</string>
     <string name="login_password_hint">Password</string>
     <string name="login_button">Sign In</string>

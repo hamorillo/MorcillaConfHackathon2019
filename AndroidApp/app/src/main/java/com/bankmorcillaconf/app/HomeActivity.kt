@@ -2,6 +2,7 @@ package com.bankmorcillaconf.app
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,6 +15,7 @@ import com.bankmorcillaconf.app.ui.NewTaskActivity
 import com.bankmorcillaconf.app.util.ResultListener
 import kotlinx.android.synthetic.main.home_activity.*
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bankmorcillaconf.app.model.Pomodoro
@@ -52,17 +54,29 @@ class HomeActivity : AppCompatActivity() {
             if (tasks == null || tasks?.size == 0) {
                 startActivity(NewTaskActivity.newIntent(this))
             } else {
-                tasks?.sortedBy { it.pomodoTimeMillis }?.first()?.let {
-                    val pomodoro = Pomodoro(System.currentTimeMillis(), it.pomodoTimeMillis)
-                    pomodoroRepository.createPomodoro(staticUser!!, it, pomodoro, ResultListener(
-                        onSuccess = {
-                            Toast.makeText(this@HomeActivity, "Pomodoro created", Toast.LENGTH_SHORT).show()
-                            updateUsersInfo()
-                        },
-                        onError = {
-                            Toast.makeText(this@HomeActivity, "Error creating pomodoro", Toast.LENGTH_SHORT).show()
-                        }
-                    ))
+
+                tasks?.sortedBy { it.creationDate }?.lastOrNull()?.let {
+                    if (counter == null) {
+                        val pomodoro = Pomodoro(System.currentTimeMillis(), it.pomodoTimeMillis)
+                        pomodoroRepository.createPomodoro(staticUser!!, it, pomodoro, ResultListener(
+                            onSuccess = {
+                                Toast.makeText(this@HomeActivity, "Pomodoro created", Toast.LENGTH_SHORT).show()
+                                updateUsersInfo()
+                            },
+                            onError = {
+                                Toast.makeText(this@HomeActivity, "Error creating pomodoro", Toast.LENGTH_SHORT).show()
+                            }
+                        ))
+                    } else {
+                        userRepository.createOrUpdateUserMe(staticUser!!.copy(currentPomodoroDuration = 0L), ResultListener(
+                            onSuccess = {
+                                updateUsersInfo()
+                            },
+                            onError = {
+                                updateUsersInfo()
+                            }
+                        ))
+                    }
                 }
             }
         }
@@ -88,6 +102,7 @@ class HomeActivity : AppCompatActivity() {
 
                         override fun finished() {
                             renderLabelsRest()
+                            counter = null
                         }
                     })
 
@@ -114,7 +129,6 @@ class HomeActivity : AppCompatActivity() {
                 }
             },
             onError = {
-                //                usersTextView.text = "Error get all users"
                 Toast.makeText(this@HomeActivity, "Error get users", Toast.LENGTH_SHORT).show()
             }
         ))
@@ -122,7 +136,7 @@ class HomeActivity : AppCompatActivity() {
         taskRepository.getAllTasks(staticUser!!, ResultListener(
             onSuccess = { tasks ->
                 this.tasks = tasks
-                renderActualTask(tasks.sortedBy { it.pomodoTimeMillis }.firstOrNull())
+                renderActualTask(tasks.sortedBy { it.creationDate }.lastOrNull())
             },
             onError = {
                 Toast.makeText(this@HomeActivity, "Error get tasks", Toast.LENGTH_SHORT).show()
@@ -143,6 +157,9 @@ class HomeActivity : AppCompatActivity() {
     private fun renderActualTask(task: Task?) {
         if (task != null) {
             actualTaskTextView.text = task.id
+            actualTaskTextView.setOnClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(task.url)))
+            }
         }
     }
 
