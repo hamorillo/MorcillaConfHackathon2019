@@ -52,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
             if (tasks == null || tasks?.size == 0) {
                 startActivity(NewTaskActivity.newIntent(this))
             } else {
-                tasks?.sortedBy { it.pomodoTimeMillis }?.last()?.let {
+                tasks?.sortedBy { it.pomodoTimeMillis }?.first()?.let {
                     val pomodoro = Pomodoro(System.currentTimeMillis(), it.pomodoTimeMillis)
                     pomodoroRepository.createPomodoro(staticUser!!, it, pomodoro, ResultListener(
                         onSuccess = {
@@ -122,7 +122,7 @@ class HomeActivity : AppCompatActivity() {
         taskRepository.getAllTasks(staticUser!!, ResultListener(
             onSuccess = { tasks ->
                 this.tasks = tasks
-                renderActualTask(tasks.sortedBy { it.pomodoTimeMillis }.lastOrNull())
+                renderActualTask(tasks.sortedBy { it.pomodoTimeMillis }.firstOrNull())
             },
             onError = {
                 Toast.makeText(this@HomeActivity, "Error get tasks", Toast.LENGTH_SHORT).show()
