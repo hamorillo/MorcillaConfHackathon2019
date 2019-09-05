@@ -106,7 +106,7 @@ class HomeActivity : AppCompatActivity() {
             onSuccess = { users ->
                 val usersWithoutMe = users
                     .filter { it.email != staticUser!!.email }
-                    .sortedByDescending { it.currentPomodoroStartDate }
+                    .sortedByDescending { ((it.currentPomodoroStartDate ?: 0L) + (it.currentPomodoroDuration ?: 0L)) }
 
                 usersRecyclerView.apply {
                     layoutManager = LinearLayoutManager(this@HomeActivity)
