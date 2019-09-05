@@ -5,21 +5,29 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.bankmorcillaconf.app.R
 import com.bankmorcillaconf.app.model.User
-import com.bankmorcillaconf.app.repository.UserRepository
 import com.bankmorcillaconf.app.util.format
 import java.util.concurrent.TimeUnit
 
-class PomodoroTimer constructor(val textView: TextView, millisInFuture: Long, countDownInterval: Long, colorDisabled: Int) :
+class PomodoroTimer constructor(
+    val textView: TextView,
+    millisInFuture: Long,
+    countDownInterval: Long,
+    val colorDisabled: Int,
+    val pomodoroTimerListener: PomodoroTimerListener?
+) :
     CountDownTimer(millisInFuture, countDownInterval) {
 
     override fun onFinish() {
         textView.text = "00:00"
-        textView.setTextColor(ContextCompat.getColor(textView.context, R.color.pomodoroDisabled))
+        textView.setTextColor(ContextCompat.getColor(textView.context, colorDisabled))
+        pomodoroTimerListener?.finished()
     }
 
     override fun onTick(millis: Long) {
         val hms =
-            ((TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis))).format(2)+ ":"
+            ((TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis))).format(
+                2
+            ) + ":"
                     + ((TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(
                 TimeUnit.MILLISECONDS.toMinutes(
                     millis
@@ -29,26 +37,37 @@ class PomodoroTimer constructor(val textView: TextView, millisInFuture: Long, co
     }
 
     companion object {
-        fun create(textView: TextView, user: User, colorEnabled: Int, colorDisabled: Int = R.color.pomodoroDisabled): PomodoroTimer? {
+        fun create(
+            timerTextView: TextView,
+            user: User,
+            colorEnabled: Int,
+            colorDisabled: Int = R.color.pomodoroDisabled,
+            pomodoroTimerListener: PomodoroTimerListener? = null
+        ): PomodoroTimer? {
             user.currentPomodoroStartDate?.let {
-                val finishTime = it + (UserRepository.staticUser!!.currentPomodoroDuration ?: 0)
+                val finishTime = it + (user.currentPomodoroDuration ?: 0)
                 val durationLeft = finishTime - System.currentTimeMillis()
                 if (durationLeft > 0L) {
-                    textView.setTextColor(ContextCompat.getColor(textView.context, colorEnabled))
-                    val counter = PomodoroTimer(textView, durationLeft, 1000L, colorDisabled)
+                    timerTextView.setTextColor(ContextCompat.getColor(timerTextView.context, colorEnabled))
+                    val counter = PomodoroTimer(timerTextView, durationLeft, 1000L, colorDisabled, pomodoroTimerListener)
                     counter.start()
+                    pomodoroTimerListener?.working()
                     return counter
                 } else {
-                    textView.text = "00:00"
-                    textView.setTextColor(ContextCompat.getColor(textView.context, colorDisabled))
+                    timerTextView.text = "00:00"
+                    timerTextView.setTextColor(ContextCompat.getColor(timerTextView.context, colorDisabled))
                     return null
                 }
             } ?: run {
-                textView.text = "00:00"
-                textView.setTextColor(ContextCompat.getColor(textView.context, colorDisabled))
+                timerTextView.text = "00:00"
+                timerTextView.setTextColor(ContextCompat.getColor(timerTextView.context, colorDisabled))
                 return null
             }
         }
     }
+}
 
+interface PomodoroTimerListener {
+    fun working()
+    fun finished()
 }

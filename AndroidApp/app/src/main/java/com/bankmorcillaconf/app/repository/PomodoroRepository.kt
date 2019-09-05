@@ -25,7 +25,7 @@ class PomodoroRepository {
 
     val userRepository = UserRepository()
 
-    private fun toPomodoroId(pomodoro: Pomodoro) =  pomodoro.startDate.toString()
+    private fun toPomodoroId(pomodoro: Pomodoro) = pomodoro.startDate.toString()
 
     fun createPomodoro(user: User, task: Task, pomodoro: Pomodoro, result: ResultListener<Pomodoro, Unit>) {
         // Add a new document with a generated ID
@@ -38,7 +38,10 @@ class PomodoroRepository {
             .set(pomodoro.serializeToMap())
             .addOnSuccessListener {
                 Log.d(TAG, "pomodoro added")
-                val userWithPomodoro = user.copy(currentPomodoroStartDate = pomodoro.startDate, currentPomodoroDuration = pomodoro.duration)
+                val userWithPomodoro = user.copy(
+                    currentPomodoroStartDate = pomodoro.startDate,
+                    currentPomodoroDuration = pomodoro.duration
+                )
                 userRepository.createOrUpdateUserMe(userWithPomodoro, ResultListener(
                     onSuccess = {
                         result.success(pomodoro)
@@ -83,9 +86,9 @@ class PomodoroRepository {
     }
 
 
-    fun getAllPomodoros(user: User, task: Task, result: ResultListener<List<Pomodoro>, Unit>) {
+    fun getAllPomodoros(userMail: String, task: Task, result: ResultListener<List<Pomodoro>, Unit>) {
         db.collection(USERS)
-            .document(user.email.sha1())
+            .document(userMail.sha1())
             .collection(TASKS)
             .document(task.id)
             .collection(POMODOROS)
@@ -103,6 +106,10 @@ class PomodoroRepository {
                     result.error(Unit)
                 }
             }
+    }
+
+    fun getAllPomodoros(user: User, task: Task, result: ResultListener<List<Pomodoro>, Unit>) {
+        return getAllPomodoros(user.email, task, result)
     }
 
 }
