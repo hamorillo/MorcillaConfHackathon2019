@@ -68,6 +68,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/send_notification_ic"
             android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             app:layout_constraintStart_toEndOf="@+id/statusTextView"
             app:layout_constraintTop_toTopOf="@+id/statusTextView"/>
 

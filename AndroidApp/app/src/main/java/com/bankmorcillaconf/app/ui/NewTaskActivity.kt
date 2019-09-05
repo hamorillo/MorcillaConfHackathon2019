@@ -28,9 +28,18 @@ class NewTaskActivity : AppCompatActivity() {
         setContentView(R.layout.new_task_activity)
 
         addTaskButton.setOnClickListener {
+            var timeInMillis: Long = 0
+            try {
+                timeInMillis = taskPomodoTimeEditText.text.toString().toLong() * 60 * 1000
+            } catch (exception: Exception) {
+                Toast.makeText(this@NewTaskActivity, "Invalid time", Toast.LENGTH_SHORT).show()
+            }
+
             try {
                 val taskUrl = taskUrlEditText.text.toString()
-                val task = Task(taskUrl.split("//")[1].split("/").takeLast(1)[0], taskUrl, "no description")
+
+                val task =
+                    Task(taskUrl.split("//")[1].split("/").takeLast(1)[0], taskUrl, timeInMillis, "no description", System.currentTimeMillis())
                 taskRepository.createTask(UserRepository.staticUser!!, task, ResultListener(
                     onSuccess = {
                         Toast.makeText(this@NewTaskActivity, "Task created", Toast.LENGTH_SHORT).show()

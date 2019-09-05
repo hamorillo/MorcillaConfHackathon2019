@@ -10,11 +10,14 @@
     <TextView android:id="@+id/titleAddTaskTextView"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              android:textColor="@android:color/black"
+              android:textSize="16sp"
+              android:textStyle="bold"
               app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintStart_toStartOf="parent"
               android:layout_marginTop="8dp"
               app:layout_constraintEnd_toEndOf="parent"
-              android:text="Crear tarea..."/>
+              android:text="Configure Task ..."/>
 
     <EditText android:id="@+id/taskUrlEditText"
               android:layout_width="match_parent"
@@ -28,16 +31,31 @@
               android:layout_marginEnd="8dp"
               android:layout_marginBottom="8dp"/>
 
+    <EditText android:id="@+id/taskPomodoTimeEditText"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:hint="Pomodo Time in Minutes"
+              android:inputType="number"
+              app:layout_constraintTop_toBottomOf="@+id/taskUrlEditText"
+              app:layout_constraintStart_toStartOf="parent"
+              android:layout_marginStart="8dp"
+              app:layout_constraintEnd_toEndOf="parent"
+              android:layout_marginEnd="8dp"
+              android:layout_marginBottom="8dp"/>
+
     <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Crear tarea"
+            android:text="Add"
+            style="@style/ButtonBlack"
             android:id="@+id/addTaskButton"
-            app:layout_constraintTop_toBottomOf="@id/taskUrlEditText"
+            app:layout_constraintTop_toBottomOf="@id/taskPomodoTimeEditText"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"/>
-
 
     <TextView android:id="@+id/myTasksTextView"
               android:layout_width="wrap_content"

@@ -5,4 +5,6 @@
     <string name="login_button">Sign In</string>
     <string name="notification_title">They need you!</string>
     <string name="logout">Logout</string>
+    <string name="new_task">New Task</string>
+    <string name="my_profile">My profile</string>
 </resources>

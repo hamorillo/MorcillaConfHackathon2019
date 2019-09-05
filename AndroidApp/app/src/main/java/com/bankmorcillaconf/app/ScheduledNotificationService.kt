@@ -31,7 +31,7 @@ class ScheduledNotificationService : JobService() {
                 .setContentText(originUser)
                 .setVibrate(LongArray(0))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setSmallIcon(android.R.drawable.ic_menu_camera)
+                .setSmallIcon(R.drawable.send_notification_ic)
                 .setAutoCancel(true)
 
             notificationManager.notify(Random().nextInt(), notificationBuilder.build())
