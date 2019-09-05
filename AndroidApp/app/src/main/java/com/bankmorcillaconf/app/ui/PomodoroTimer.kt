@@ -31,7 +31,7 @@ class PomodoroTimer constructor(val textView: TextView, millisInFuture: Long, co
     companion object {
         fun create(textView: TextView, user: User, colorEnabled: Int, colorDisabled: Int = R.color.pomodoroDisabled): PomodoroTimer? {
             user.currentPomodoroStartDate?.let {
-                val finishTime = it + (UserRepository.staticUser!!.currentPomodoroDuration ?: 0)
+                val finishTime = it + (user.currentPomodoroDuration ?: 0)
                 val durationLeft = finishTime - System.currentTimeMillis()
                 if (durationLeft > 0L) {
                     textView.setTextColor(ContextCompat.getColor(textView.context, colorEnabled))
