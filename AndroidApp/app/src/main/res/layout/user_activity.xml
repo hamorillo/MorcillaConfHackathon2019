@@ -62,6 +62,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+    <ImageView
+            android:id="@+id/sendNotificationImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/send_notification_ic"
+            android:layout_marginStart="24dp"
+            app:layout_constraintStart_toEndOf="@+id/statusTextView"
+            app:layout_constraintTop_toTopOf="@+id/statusTextView"/>
+
     <TextView
             android:id="@+id/latestTasks"
             android:layout_width="0dp"
