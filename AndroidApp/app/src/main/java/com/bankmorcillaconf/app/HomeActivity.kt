@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -158,7 +159,11 @@ class HomeActivity : AppCompatActivity() {
         if (task != null) {
             actualTaskTextView.text = task.id
             actualTaskTextView.setOnClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(task.url)))
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(task.url)))
+                } catch (exception: Exception) {
+                    Log.e("HomeActivity", "Invalid url", exception)
+                }
             }
         }
     }

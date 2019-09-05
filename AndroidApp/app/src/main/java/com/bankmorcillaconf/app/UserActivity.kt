@@ -112,12 +112,12 @@ class UserActivity : AppCompatActivity() {
             val actualTimeStamp = System.currentTimeMillis()
             val finishPomodoroTimeStamp = currentPomodoroStartDate + currentPomodoroDuration
             if (actualTimeStamp > finishPomodoroTimeStamp) {
-                "Now is taking a rest" //getDrawable(R.drawable.user_available_ic)
+                "Now is taking a rest"
             } else {
-                "Now is working" //getDrawable(R.drawable.user_busy_ic)
+                "Now is working"
             }
         } else {
-            "Now is taking a rest" //getDrawable(R.drawable.user_available_ic)
+            "Now is taking a rest"
         }
     }
 

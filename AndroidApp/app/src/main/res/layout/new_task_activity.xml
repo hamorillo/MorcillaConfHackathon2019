@@ -63,6 +63,8 @@
               app:layout_constraintTop_toBottomOf="@id/addTaskButton"
               app:layout_constraintStart_toStartOf="parent"
               android:layout_marginTop="16dp"
-              tools:text="Tasks..."/>
+              android:layout_marginStart="16dp"
+              android:textColor="@android:color/black"
+              tools:text="Tasks:"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

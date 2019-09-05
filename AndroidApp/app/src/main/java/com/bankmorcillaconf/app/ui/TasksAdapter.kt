@@ -1,17 +1,17 @@
 package com.bankmorcillaconf.app.ui
 
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bankmorcillaconf.app.R
 import com.bankmorcillaconf.app.model.Task
 import com.bankmorcillaconf.app.repository.PomodoroRepository
 import com.bankmorcillaconf.app.util.ResultListener
 import kotlinx.android.synthetic.main.user_task_item.view.*
-import android.content.Intent
-import android.net.Uri
-
-
 
 
 class TasksAdapter(private val userId: String, private val data: List<Task>) :
@@ -30,9 +30,24 @@ class TasksAdapter(private val userId: String, private val data: List<Task>) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.view.taskUrlTextView.text = data[position].url
+        val url = data[position].url
+
+        holder.view.taskUrlTextView.text = url
+
+        if (url.contains("jira")) {
+            holder.view.linkImageView.setImageResource(R.drawable.jira)
+        } else if (url.contains("trello")) {
+            holder.view.linkImageView.setImageResource(R.drawable.trello)
+        } else {
+            holder.view.linkImageView.setImageResource(R.drawable.link)
+        }
+
         holder.view.setOnClickListener {
-            holder.view.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(data[position].url)))
+            try {
+                holder.view.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+            } catch (exception: Exception) {
+                Log.e("TasksAdapter", "Invalid url", exception)
+            }
         }
         pomodoroRepository.getAllPomodoros(
             userId, data[position], ResultListener(

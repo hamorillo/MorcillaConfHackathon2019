@@ -63,8 +63,8 @@ class NewTaskActivity : AppCompatActivity() {
         taskRepository.getAllTasks(
             UserRepository.staticUser!!, ResultListener(
                 onSuccess = { tasks ->
-                    var tasksString = "Your tasks:"
-                    tasks.forEach { task ->
+                    var tasksString = "Your current tasks:\n"
+                    tasks.sortedByDescending { it.creationDate }.forEach { task ->
                         tasksString += "\n" + task.url
                     }
                     myTasksTextView.text = tasksString
