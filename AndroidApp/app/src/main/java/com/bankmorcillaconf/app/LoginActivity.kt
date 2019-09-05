@@ -115,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
                     val userWithSameToken = users.firstOrNull { it.tokenPush == token && it.email != newUserMail }
                     if (userWithSameToken != null) {
                         userRepository.createOrUpdateUserMe(
-                            userWithSameToken.copy(tokenPush = null), ResultListener(
+                            userWithSameToken.copy(tokenPush = ""), ResultListener(
                                 onSuccess = {
                                     Log.i(TAG, "Removed token from user: ${userWithSameToken.email}")
                                 },
