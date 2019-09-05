@@ -28,11 +28,16 @@ class NewTaskActivity : AppCompatActivity() {
         setContentView(R.layout.new_task_activity)
 
         addTaskButton.setOnClickListener {
-            var timeInMillis: Long = 0
+            val timeInMillis: Long
             try {
+                if(taskPomodoTimeEditText.text.isEmpty()){
+                    Toast.makeText(this@NewTaskActivity, "Invalid time", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
                 timeInMillis = taskPomodoTimeEditText.text.toString().toLong() * 60 * 1000
             } catch (exception: Exception) {
                 Toast.makeText(this@NewTaskActivity, "Invalid time", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
 
             try {

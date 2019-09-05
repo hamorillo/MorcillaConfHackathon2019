@@ -45,7 +45,6 @@ class ScheduledNotificationService : JobService() {
     override fun onStartJob(params: JobParameters): Boolean {
         params.extras.getString(EXTRA_ORIGIN_USER_MAIL)?.let {
             showNotification(this, it)
-            stopSelf()
         }
         return true
     }
