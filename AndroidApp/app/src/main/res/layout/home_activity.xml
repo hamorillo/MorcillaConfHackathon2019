@@ -17,26 +17,37 @@
             android:id="@+id/constraintLayout">
 
         <TextView android:id="@+id/pomodoroMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="Get Ready"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  android:text="Get Ready"
                   android:textSize="20sp"
                   android:paddingTop="8dp"
                   android:textStyle="bold"
                   android:textColor="@android:color/white"/>
 
+        <TextView
+                android:id="@+id/actualTaskTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/white"
+                android:textStyle="italic"
+                app:layout_constraintTop_toBottomOf="@+id/pomodoroMessage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Tarea"/>
+
         <TextView android:id="@+id/myCurrentPomodoro"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  app:layout_constraintTop_toBottomOf="@id/pomodoroMessage"
+                  app:layout_constraintTop_toBottomOf="@id/actualTaskTextView"
                   app:layout_constraintStart_toStartOf="parent"
                   app:layout_constraintEnd_toEndOf="parent"
                   android:textSize="50sp"
-                  android:paddingTop="8dp"
-                  android:paddingBottom="8dp"
                   android:textColor="@color/pomodoroDisabled"
                   android:text="00:00"/>
 

@@ -117,12 +117,17 @@ class HomeActivity : AppCompatActivity() {
         taskRepository.getAllTasks(staticUser!!, ResultListener(
             onSuccess = { tasks ->
                 this.tasks = tasks
+                renderActualTask(tasks.first())
             },
             onError = {
 //                usersTextView.text = "Error get my tasks"
                 Toast.makeText(this@HomeActivity, "Error get tasks", Toast.LENGTH_SHORT).show()
             }
         ))
+    }
+
+    private fun renderActualTask(task: Task) {
+        actualTaskTextView.text = task.id
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
